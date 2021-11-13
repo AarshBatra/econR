@@ -12,7 +12,7 @@
 #' @importFrom tibble is_tibble
 #' @importFrom broom tidy
 #'
-#' @param data dataset(\code{tibble}/\code{data.frame}) object from which the
+#' @param df dataset(\code{tibble}/\code{data.frame}) object from which the
 #' variable names are chosen.
 #'
 #' @param variable_names_vec a vector of variable names. For each of these
@@ -20,14 +20,15 @@
 #'                           of missing values present in their list of
 #'                           values. If you want to see missing values for
 #'                           all variables (columns) in the dataset, set
-#'                           \code{variable_names_vec = "all"}.
+#'                           \code{variable_names_vec = "all"}. Also, the
+#'                           default for this argument is "all".
 #'
 #'
 #'
 #' @examples
-#' count_missing_val(data = data, variable_names_vec = c("a", "b"))
-#' count_missing_val(data = data, variable_names_vec = "all")
-#' count_missing_val(data = data) # uses default \code{variable_names_vec = "all"}
+#' count_missing_values(df = dataObj, variable_names_vec = c("a", "b"))
+#' count_missing_values(df = dataObj, variable_names_vec = "all")
+#' count_missing_values(df = dataObj) # uses default \code{variable_names_vec = "all"}
 #'
 #' @return
 #'

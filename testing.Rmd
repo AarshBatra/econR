@@ -52,3 +52,4 @@ sapply(dummy_data[,variable_names], function(x) sum(is.na(x)))
 ```
 
 
+### quic 
