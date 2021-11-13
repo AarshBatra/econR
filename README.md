@@ -4,6 +4,9 @@
 # econR
 
 <!-- badges: start -->
+
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/github/AarshBatra/econR?branch=master&svg=true)](https://ci.appveyor.com/project/AarshBatra/econR)
 <!-- badges: end -->
 
 The goal of econR is to …
