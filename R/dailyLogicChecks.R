@@ -156,14 +156,6 @@ count_duplicates <- function(df, uniq_identifier_col) {
 #' This function displays the duplicate surveys, given a unique identifier
 #' (which could be a single variable, or a combination of variables).
 #'
-#'
-
-
-#' Display duplicate surveys data (using map)
-#'
-#' This function displays the duplicate surveys, given a unique identifier
-#' (which could be a single variable, or a combination of variables).
-#'
 #' @importFrom envnames get_obj_name
 #' @importFrom tibble is_tibble
 #' @importFrom dplyr group_by summarise ungroup mutate select filter
