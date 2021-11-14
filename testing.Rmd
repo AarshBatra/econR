@@ -103,3 +103,16 @@ ggplot2::ggplot(data = dummy_data_duplicates, mapping = aes(x = reorder(surveyor
 
 ```
 
+
+```{r display_duplicates}
+
+foo <- display_duplicates(dummy_data, c("surveyor_id"))
+
+foo %>%
+  filter(surveyor_id %in% c(101:105)) %>%
+  ggplot(mapping = aes(x = age_c)) +
+  geom_histogram(stat = "count") +
+  facet_grid(gender~surveyor_id)
+
+```
+

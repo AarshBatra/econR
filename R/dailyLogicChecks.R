@@ -154,12 +154,14 @@ count_duplicates <- function(df, uniq_identifier_col) {
 #' Display duplicate surveys data
 #'
 #' This function displays the duplicate surveys, given a unique identifier
-#' (which could be a single variable, or a combination of variables).
+#' (which could be a single variable, or a combination of variables). In
+#' case, its a combination of variables (that uniquely identifies the
+#' underlying dataset in \code{df}), then this function will show
+#' duplicate surveys for that joint (combination) unique identifier variable.
 #'
 #' @importFrom envnames get_obj_name
 #' @importFrom tibble is_tibble
 #' @importFrom dplyr group_by summarise ungroup mutate select filter
-#' @importFrom econR count_duplicates
 #' @importFrom tidyselect everything
 #'
 #' @inheritParams count_duplicates
@@ -170,10 +172,18 @@ count_duplicates <- function(df, uniq_identifier_col) {
 #'
 #' count_duplicates(df = dataObj, uniq_identifier_col = c("ID", "Name"))
 #'
-#' count_duplicates(df = dataObj, uniq_identifier_col
-#' = tidyselect::contains("abc")) # tidyselection used to select columns.
+#' count_duplicates(df = dataObj, uniq_identifier_col =
+#' tidyselect::contains("abc")) # tidyselection used to select columns.
 #'
-#' @return
+#' @return a tibble that displays the duplicates for the given unique identifiers
+#'         in \code{uniq_identifier_col}.
+#'
+#' @note If for example, \code{surveyor_id} is the unique identifier col,
+#'       and after running \code{display_duplicates} function, we find
+#'       that, there are 5 rows with \code{surveyor_id} = 122. Now,
+#'       the output tibble from this function  should be interpreted
+#'       as follows: 4 of 5 of the \code{surveyor_id} = 122 are duplicates,
+#'       1 of 5 is original.
 #'
 #' @export
 
@@ -205,5 +215,44 @@ display_duplicates <- function(df, uniq_identifier_col){
   }
 }
 
+#' List common column names in two different data sets
+#'
+#' Find common column names in 2 different data sets. E.g. In doing field surveys,
+#' checking for variables with same name in master tracking list
+#' & field tracking list. It's a good habit to check for such
+#' common variable names to avoid losing necessary variables from using data.
+#'
+#' @importFrom envnames get_obj_name
+#' @importFrom tibble is_tibble
+#' @importFrom lubridate intersect
+#'
+#' @param df1 First dataset. This should be in either of the following formats:
+#'            \code{data.frame/tbl/tbl_df}.
+#'
+#' @param df2 Second dataset. This should be in either of the following formats:
+#'            \code{data.frame/tbl/tbl_df}.
+#'
+#' @examples
+#' list_common_columns(df1 = dataObj1, df2 = dataObj2)
+#'
+#' @return a character vector of column names that are shared by \code{df1} and
+#'         \code{df2}
+#'
+#' @export
+
+list_common_columns <- function(df1, df2) {
+  if(((envnames::get_obj_name(df1) %in% ls()) &&
+     (tibble::is_tibble(df1) || is.data.frame(df1))) &&
+     ((envnames::get_obj_name(df2) %in% ls()) &&
+      (tibble::is_tibble(df2) || is.data.frame(df2)))){
+
+    return(lubridate::intersect(colnames(df1), colnames(df2)))
 
 
+  } else {
+    stop("Either the objects (df1, df2, or both) doesn't exist or it isn't a tibble/dataframe. Please make
+         sure that the objects exist in the current environment and also make
+         sure that they are of class: 'data.frame'/'tbl'/'tbl_df'. To coerce an object to
+         to tibble you can use: 'as_tibble' function.")
+  }
+}
