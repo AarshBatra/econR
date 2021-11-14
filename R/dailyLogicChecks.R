@@ -158,21 +158,6 @@ count_duplicates <- function(df, uniq_identifier_col) {
 #'
 #'
 
-display_duplicates <- function(df, uniq_identifier_col){
-  if((envnames::get_obj_name(df) %in% ls()) &&
-     (tibble::is_tibble(df) || is.data.frame(df))){
-
-    uniq_identifier_col_df <- df %>%
-      count_duplicates(uniq_identifier_col) %>%
-      select(uniq_identifier_col)
-
-    foo <- df %>%
-      filter(!!as.symbol(uniq_identifier_col) %in%
-               as.numeric(unlist(uniq_identifier_col_df[, uniq_identifier_col])))
-  }
-
-  return(list(uniq_identifier_col_df, foo))
-}
 
 
 
