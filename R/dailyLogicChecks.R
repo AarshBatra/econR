@@ -159,12 +159,59 @@ count_duplicates <- function(df, uniq_identifier_col) {
 #'
 
 
+#' Display duplicate surveys data (using map)
+#'
+#' This function displays the duplicate surveys, given a unique identifier
+#' (which could be a single variable, or a combination of variables).
+#'
+#' @importFrom envnames get_obj_name
+#' @importFrom tibble is_tibble
+#' @importFrom dplyr group_by summarise ungroup mutate select filter
+#' @importFrom econR count_duplicates
+#' @importFrom tidyselect everything
+#'
+#' @inheritParams count_duplicates
+#'
+#' @examples
+#'
+#' count_duplicates(df = dataObj, uniq_identifier_col = c("ID"))
+#'
+#' count_duplicates(df = dataObj, uniq_identifier_col = c("ID", "Name"))
+#'
+#' count_duplicates(df = dataObj, uniq_identifier_col
+#' = tidyselect::contains("abc")) # tidyselection used to select columns.
+#'
+#' @return
+#'
+#' @export
 
+display_duplicates <- function(df, uniq_identifier_col){
+  if((envnames::get_obj_name(df) %in% ls()) &&
+     (tibble::is_tibble(df) || is.data.frame(df))){
 
+    uniq_identifier_col_df <- df %>%
+      econR::count_duplicates(uniq_identifier_col) %>%
+      dplyr::select(uniq_identifier_col)
 
+    for(i in 1:length(uniq_identifier_col)){
+      df <- df %>%
+        dplyr::filter(!!as.symbol(uniq_identifier_col[i]) %in%
+      as.numeric(unlist(uniq_identifier_col_df[, uniq_identifier_col[i]])))
+    }
 
+    return(df %>%
+             dplyr::select(uniq_identifier_col, tidyselect::everything()) %>%
+      dplyr::arrange(!!as.symbol(uniq_identifier_col[1])))
 
+  } else {
 
+    stop("Either the object doesn't exist or it isn't a tibble/dataframe. Please make
+         sure that the object exists in the current environment and also make
+         sure that it is of class: 'data.frame'/'tbl'/'tbl_df'. To coerce an object to
+         to tibble you can use: 'as_tibble' function.")
+
+  }
+}
 
 
 
