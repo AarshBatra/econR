@@ -152,6 +152,31 @@ count_duplicates <- function(df, uniq_identifier_col) {
 }
 
 
+#' Display duplicate surveys data (using map)
+#'
+#' This function displays the duplicate surveys, given a unique identifier
+#' (which could be a single variable, or a combination of variables).
+#'
+#'
+
+display_duplicates <- function(df, uniq_identifier_col){
+  if((envnames::get_obj_name(df) %in% ls()) &&
+     (tibble::is_tibble(df) || is.data.frame(df))){
+
+    uniq_identifier_col_df <- df %>%
+      count_duplicates(uniq_identifier_col) %>%
+      select(uniq_identifier_col)
+
+    for(i in 1:length(uniq_identifier_col)){
+      foo <- df %>%
+        filter(!!as.symbol(uniq_identifier_col[i]) %in%
+               as.numeric(unlist(uniq_identifier_col_df[, uniq_identifier_col[i]])))
+    }
+  }
+
+  return(list(uniq_identifier_col_df, foo))
+}
+
 
 
 
