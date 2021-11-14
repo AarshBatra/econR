@@ -3,7 +3,10 @@
 # Libraries----------------------------------------------------------------
 
 library(tidyverse)
+library(roxygen2)
+library(envnames)
 library(tidyr)
+library(magrittr)
 library(ggplot2)
 library(stringr)
 library(skimr)

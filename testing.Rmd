@@ -15,6 +15,16 @@ update_geom_defaults("rect", list(fill = "midnightblue", alpha = 0.8))
 
 ```
 
+```{r suggestions-for-new-functions}
+
+# assign values for missing surveyor IDs.
+#
+
+```
+
+
+
+
 ## Read in sample dataset
 
 ```{r read-sampleData}
@@ -35,6 +45,13 @@ skimr::skim(dummy_data)
 
 ```{r dlc-countMissingVal}
 
+# Things to be improved and other notes:
+
+# 1. tidy.number is deprecated warning message: Remove this.
+# 2. Add a plot from this function to autoplot. It should have options to 
+#    plot both percentage and counts.
+
+
 # Let us consider the variables which are unique and you want to run the missing checks for.
 # Suppose we consider "surveyor_id" and "name"
 
@@ -49,7 +66,27 @@ foo <- dummy_data[, variable_names] %>%
 
 sapply(dummy_data[,variable_names], function(x) sum(is.na(x)))
 
+dummy_data_missing <- count_missing_values(dummy_data)
+
+ggplot2::ggplot(data = dummy_data_missing, mapping = aes(x = variable_name, y = num_missing_values, size = num_missing_values)) +
+  geom_col() + coord_flip() +
+  labs(x = "Number of missing values", y = "Variable(Column) Name", 
+       title = "Number of missing Values in variables (columns)") +
+  theme(legend.title = element_blank())
+  
+
 ```
 
 
-### quic 
+```{r count_duplicates}
+
+# Things to be improved and other notes
+#
+# 1. How to use "group_by" variable (as function arguments) in writing functions? #    1.1: https://github.com/tidyverse/dplyr/issues/4734
+#    1.2: https://stackoverflow.com/questions/21208801/group-by-multiple-columns-in-dplyr-using-string-vector-input
+
+
+
+
+```
+
