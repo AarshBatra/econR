@@ -85,7 +85,20 @@ ggplot2::ggplot(data = dummy_data_missing, mapping = aes(x = variable_name, y = 
 # 1. How to use "group_by" variable (as function arguments) in writing functions? #    1.1: https://github.com/tidyverse/dplyr/issues/4734
 #    1.2: https://stackoverflow.com/questions/21208801/group-by-multiple-columns-in-dplyr-using-string-vector-input
 
+dummy_data_duplicates <- count_duplicates(dummy_data, c("surveyor_id")) %>%
+  arrange(percent_of_tot_dup)
 
+ggplot2::ggplot(data = dummy_data_duplicates, mapping = aes(x = reorder(surveyor_id, -percent_of_tot_dup), y = percent_of_tot_dup)) +
+  geom_col()  +
+  labs(x = "Surveyor Id", y = "% of total Duplicates", 
+       title = "Percent (of total) duplicate Values in Surveyor Id") +
+  theme(legend.title = element_blank())
+
+ggplot2::ggplot(data = dummy_data_duplicates, mapping = aes(x = reorder(surveyor_id, -percent_of_tot_dup), y = percent_of_tot_dup)) +
+  geom_point(mapping = aes(size = percent_of_tot_dup))  +
+  labs(x = "Surveyor Id", y = "% of total Duplicates", 
+       title = "Percent (of total) duplicate Values in Surveyor Id") +
+  theme(legend.title = element_blank())
 
 
 ```

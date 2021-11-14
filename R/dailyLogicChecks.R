@@ -139,7 +139,7 @@ count_duplicates <- function(df, uniq_identifier_col) {
         dplyr::summarise(num_duplicates = n() - 1) %>%
         dplyr::ungroup() %>%
         dplyr::mutate(tot_dup_entire_data = sum(num_duplicates),
-      percent_of_top_dup = (num_duplicates/sum(num_duplicates)) * 100))
+      percent_of_tot_dup = (num_duplicates/sum(num_duplicates)) * 100))
 
 
   } else {
@@ -151,6 +151,28 @@ count_duplicates <- function(df, uniq_identifier_col) {
 
 }
 
+#' Display duplicate surveys data
+#'
+#' This function displays the duplicate surveys, given a unique identifier
+#' (which could be a single variable, or a combination of variables).
+#'
+#'
+
+display_duplicates <- function(df, uniq_identifier_col){
+  if((envnames::get_obj_name(df) %in% ls()) &&
+     (tibble::is_tibble(df) || is.data.frame(df))){
+
+    uniq_identifier_col_df <- df %>%
+      count_duplicates(uniq_identifier_col) %>%
+      select(uniq_identifier_col)
+
+    foo <- df %>%
+      filter(!!as.symbol(uniq_identifier_col) %in%
+               as.numeric(unlist(uniq_identifier_col_df[, uniq_identifier_col])))
+  }
+
+  return(list(uniq_identifier_col_df, foo))
+}
 
 
 
